@@ -48,7 +48,11 @@ function App() {
   };
 
   // Configuração da URL do Backend
-  const BASE_URL = import.meta.env.VITE_API_URL || '';
+  let rawUrl = import.meta.env.VITE_API_URL || '';
+  if (rawUrl && !rawUrl.startsWith('http')) {
+    rawUrl = `https://${rawUrl}`;
+  }
+  const BASE_URL = rawUrl.replace(/\/+$/, ''); // Remove barras no final
   console.log('API Conectada em:', BASE_URL || '(Local)');
 
   // Carregar dados iniciais do Backend
