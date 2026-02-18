@@ -12,11 +12,15 @@ app.use(express.json({ limit: '50mb' }));
 
 // Database connection
 const pool = new Pool({
-    user: process.env.POSTGRES_USER || 'admin',
-    host: process.env.POSTGRES_HOST || 'db',
-    database: process.env.POSTGRES_DB || 'projota_db',
-    password: process.env.POSTGRES_PASSWORD || 'secure_password_123',
-    port: process.env.POSTGRES_PORT || 5432,
+    connectionString: process.env.DATABASE_URL,
+    // Fallback to individual variables if DATABASE_URL is not provided
+    ...(process.env.DATABASE_URL ? {} : {
+        user: process.env.POSTGRES_USER || 'admin',
+        host: process.env.POSTGRES_HOST || 'db',
+        database: process.env.POSTGRES_DB || 'projota_db',
+        password: process.env.POSTGRES_PASSWORD || 'secure_password_123',
+        port: process.env.POSTGRES_PORT || 5432,
+    }),
 });
 
 // Database Initialization
