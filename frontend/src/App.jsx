@@ -47,15 +47,18 @@ function App() {
     setTheme(prev => prev === 'dark' ? 'light' : 'dark');
   };
 
+  // Configuração da URL do Backend
+  const BASE_URL = import.meta.env.VITE_API_URL || '';
+
   // Carregar dados iniciais do Backend
   const fetchData = async () => {
     try {
       const [pRes, cRes, sRes, uRes, setRes] = await Promise.all([
-        fetch('/api/pedidos'),
-        fetch('/api/clientes'),
-        fetch('/api/servicos'),
-        fetch('/api/users'),
-        fetch('/api/settings')
+        fetch(`${BASE_URL}/api/pedidos`),
+        fetch(`${BASE_URL}/api/clientes`),
+        fetch(`${BASE_URL}/api/servicos`),
+        fetch(`${BASE_URL}/api/users`),
+        fetch(`${BASE_URL}/api/settings`)
       ]);
 
       if (pRes.ok) setPedidos(await pRes.json());
@@ -95,7 +98,7 @@ function App() {
 
   const addServico = async (novoServico) => {
     try {
-      const res = await fetch('/api/servicos', {
+      const res = await fetch(`${BASE_URL}/api/servicos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(novoServico)
@@ -111,7 +114,7 @@ function App() {
 
   const deleteServico = async (servicoId) => {
     try {
-      const res = await fetch(`/api/servicos/${servicoId}`, { method: 'DELETE' });
+      const res = await fetch(`${BASE_URL}/api/servicos/${servicoId}`, { method: 'DELETE' });
       if (res.ok) {
         setServicos(prev => prev.filter(s => s.id !== servicoId));
       }
@@ -122,7 +125,7 @@ function App() {
 
   const updateSettings = async (newSettings) => {
     try {
-      const res = await fetch('/api/settings', {
+      const res = await fetch(`${BASE_URL}/api/settings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newSettings)
@@ -140,7 +143,7 @@ function App() {
 
   const handleCreateUser = async (newUser) => {
     try {
-      const res = await fetch('/api/users', {
+      const res = await fetch(`${BASE_URL}/api/users`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser)
@@ -159,7 +162,7 @@ function App() {
 
   const handleDeleteUser = async (username) => {
     try {
-      const res = await fetch(`/api/users/${username}`, { method: 'DELETE' });
+      const res = await fetch(`${BASE_URL}/api/users/${username}`, { method: 'DELETE' });
       if (res.ok) {
         setUsers(prev => prev.filter(u => u.username !== username));
       }
@@ -170,7 +173,7 @@ function App() {
 
   const handleLogin = async (credentials) => {
     try {
-      const res = await fetch('/api/login', {
+      const res = await fetch(`${BASE_URL}/api/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(credentials)
@@ -190,7 +193,7 @@ function App() {
 
   const resetPassword = async (username, newPassword) => {
     try {
-      const res = await fetch(`/api/users/${username}/password`, {
+      const res = await fetch(`${BASE_URL}/api/users/${username}/password`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: newPassword })
@@ -211,7 +214,7 @@ function App() {
 
   const addPedido = async (pedido) => {
     try {
-      const res = await fetch('/api/pedidos', {
+      const res = await fetch(`${BASE_URL}/api/pedidos`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pedido)
@@ -234,7 +237,7 @@ function App() {
 
   const updatePedido = async (pedidoAtualizado) => {
     try {
-      const res = await fetch(`/api/pedidos/${pedidoAtualizado.id}`, {
+      const res = await fetch(`${BASE_URL}/api/pedidos/${pedidoAtualizado.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(pedidoAtualizado)
@@ -251,7 +254,7 @@ function App() {
 
   const handleQuickPay = async (pedidoId) => {
     try {
-      const res = await fetch(`/api/pedidos/${pedidoId}/pay`, { method: 'PATCH' });
+      const res = await fetch(`${BASE_URL}/api/pedidos/${pedidoId}/pay`, { method: 'PATCH' });
       if (res.ok) fetchData();
     } catch (err) {
       console.error(err);
@@ -260,7 +263,7 @@ function App() {
 
   const handleWithdraw = async (pedidoId) => {
     try {
-      const res = await fetch(`/api/pedidos/${pedidoId}/withdraw`, { method: 'PATCH' });
+      const res = await fetch(`${BASE_URL}/api/pedidos/${pedidoId}/withdraw`, { method: 'PATCH' });
       if (res.ok) fetchData();
     } catch (err) {
       console.error(err);
@@ -269,7 +272,7 @@ function App() {
 
   const addCliente = async (cliente) => {
     try {
-      const res = await fetch('/api/clientes', {
+      const res = await fetch(`${BASE_URL}/api/clientes`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cliente)
@@ -291,7 +294,7 @@ function App() {
 
   const updateCliente = async (cliente) => {
     try {
-      const res = await fetch(`/api/clientes/${cliente.id}`, {
+      const res = await fetch(`${BASE_URL}/api/clientes/${cliente.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(cliente)
@@ -306,7 +309,7 @@ function App() {
 
   const deleteCliente = async (clienteId) => {
     try {
-      const res = await fetch(`/api/clientes/${clienteId}`, { method: 'DELETE' });
+      const res = await fetch(`${BASE_URL}/api/clientes/${clienteId}`, { method: 'DELETE' });
       if (res.ok) {
         fetchData();
       } else {
