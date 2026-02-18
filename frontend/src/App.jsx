@@ -49,6 +49,7 @@ function App() {
 
   // Configuração da URL do Backend
   const BASE_URL = import.meta.env.VITE_API_URL || '';
+  console.log('API Conectada em:', BASE_URL || '(Local)');
 
   // Carregar dados iniciais do Backend
   const fetchData = async () => {
