@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  # Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "9015:80" # Exposed port (secure access point)
+    networks:
+      - app-network
+    depends_on:
+      - backend
+
+  # Backend API
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      - PORT=3000
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secure_password_123
+      - POSTGRES_DB=projota_db
+      - POSTGRES_HOST=db
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  # PostgreSQL Database
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secure_password_123
+      - POSTGRES_DB=projota_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network
+    # Port 5432 is NOT exposed to host machine for security, only to backend
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  db_data:

@@ -1,0 +1,62 @@
+:root {
+    /* Brand Colors - Professional Blue Palette */
+    --color-primary: #0052FF;
+    /* Trustworthy Blue */
+    --color-primary-dark: #0040C9;
+    --color-primary-light: #4C85FF;
+    --color-secondary: #0A1F44;
+    /* Deep Navy */
+    --color-accent: #00D4FF;
+    /* Cyan Highlight */
+
+    /* Backgrounds */
+    --bg-app: #F4F7FE;
+    /* Light Blue-Grey */
+    --bg-card: #FFFFFF;
+    --bg-input: #F0F4F8;
+
+    /* Text */
+    --text-primary: #0A1F44;
+    --text-secondary: #64748B;
+    --text-muted: #94A3B8;
+    --text-inverse: #FFFFFF;
+
+    /* Status */
+    --color-success: #10B981;
+    --color-danger: #EF4444;
+    --color-warning: #F59E0B;
+
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+
+    /* Border Radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1rem;
+    --radius-full: 9999px;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+
+    /* Typography */
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Dark Mode Support (Optional but good for crypto apps) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg-app: #0D1117;
+        --bg-card: #161B22;
+        --bg-input: #21262D;
+
+        --text-primary: #F0F6FC;
+        --text-secondary: #8B949E;
+        --text-muted: #6E7681;
+    }
+}

@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Frontend Development
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    command: npm run dev
+    ports:
+      - "5173:5173" # Vite default port
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/public:/app/public
+      - ./frontend/vite.config.js:/app/vite.config.js
+      - ./frontend/index.html:/app/index.html
+      # Avoid overwriting node_modules
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true # Better file watching for Docker on Windows
+    networks:
+      - app-network-dev
+    depends_on:
+      - backend
+
+  # Backend Development
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    command: npm run dev # Uses nodemon
+    ports:
+      - "3000:3000" # Expose backend port for direct access/debugging if needed
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - PORT=3000
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secure_password_123
+      - POSTGRES_DB=projota_db
+      - POSTGRES_HOST=db
+    networks:
+      - app-network-dev
+    depends_on:
+      - db
+
+  # PostgreSQL Database (Shared config)
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=secure_password_123
+      - POSTGRES_DB=projota_db
+    volumes:
+      - db_data_dev:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - app-network-dev
+
+networks:
+  app-network-dev:
+    driver: bridge
+
+volumes:
+  db_data_dev:
